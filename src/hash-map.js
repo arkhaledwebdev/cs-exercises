@@ -1,16 +1,38 @@
 const HashNode = require("./hash-node");
 class HashMap {
-  constructor() {
-    this.buckets = new Array(16).fill(null);
+  constructor(size = 16) {
+    this.buckets = new Array(size).fill(null);
     this.capacity = this.buckets.length;
     this.loadFactor = 0.75;
   }
 
   isLoadFactorReached() {
-    return this.buckets.length / this.capacity >= this.loadFactor;
+    let loadedBuckets = this.getLoadedBuckets();
+    console.log(loadedBuckets);
+    return  loadedBuckets / this.capacity >= this.loadFactor;
   }
 
-  // resizeHashMap() {}
+  getLoadedBuckets(){
+    let bucketsLoadedNo = 0;
+    for(const bucket in this.buckets){
+      if(bucket !== null){
+        bucketsLoadedNo ++;
+      }
+    }
+    return bucketsLoadedNo;
+  }
+
+  resizeHashMap() {
+    let newBuckets = new HashMap(this.capacity * 2);
+
+    this.buckets.forEach((bucket)=>{
+      if(bucket !== null){
+        newBuckets.set(bucket.key, bucket.value);
+      }
+    });
+    this.capacity = newBuckets.buckets.length;
+    this.buckets = newBuckets;
+  }
 
   hash(value) {
     let hashCode = 0;
@@ -22,22 +44,23 @@ class HashMap {
   }
 
   set(key, value) {
-    // if (this.isLoadFactorReached()) {
-    //   resizeHashMap();
-    // }
-    const hashedKey = this.hash(value);
+    if (this.isLoadFactorReached()) {
+      this.resizeHashMap();
+    }
+    const hashedKey = this.hash(key);
     this.buckets[hashedKey] = new HashNode(key, value);
   }
 }
 
 const hashMap = new HashMap();
-const key1 = hashMap.hash("Sara");
-console.log(key1);
-hashMap.set(key1, "Sara");
-const key2 = hashMap.hash("elsa");
-console.log(key2);
-hashMap.set(key2, "elsa");
-const key3 = hashMap.hash("John");
-console.log(key3);
-hashMap.set(key3, "John");
+
+console.log(`Sara: ${hashMap.hash("Sara")}`);
+hashMap.set("Sara", "Sara is a girl");
+
+console.log(`elsa: ${hashMap.hash("elsa")}`);
+hashMap.set("elsa", "elsa is a girl too");
+
+console.log(`john: ${hashMap.hash("john")}`);
+hashMap.set("John", "John is a boy");
+
 console.log(hashMap);
