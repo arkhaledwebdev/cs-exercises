@@ -1,4 +1,5 @@
 const HashNode = require("./hash-node");
+
 class HashMap {
   constructor(size = 16) {
     this.buckets = new Array(size).fill(null);
@@ -7,23 +8,28 @@ class HashMap {
   }
 
   isLoadFactorReached() {
-    let loadedBuckets = this.getLoadedBuckets();
+    const loadedBuckets = this.getLoadedBuckets();
     console.log(loadedBuckets);
     return  loadedBuckets / this.capacity >= this.loadFactor;
   }
 
   getLoadedBuckets(){
     let bucketsLoadedNo = 0;
-    for(const bucket in this.buckets){
+    Object.values(this.buckets).forEach((bucket)=>{
       if(bucket !== null){
-        bucketsLoadedNo ++;
+        bucketsLoadedNo  += 1;
       }
-    }
+    });
+    // for(const bucket in this.buckets){
+    //   if(bucket !== null){
+    //     bucketsLoadedNo  += 1;
+    //   }
+    // }
     return bucketsLoadedNo;
   }
 
   resizeHashMap() {
-    let newBuckets = new HashMap(this.capacity * 2);
+    const newBuckets = new HashMap(this.capacity * 2);
 
     this.buckets.forEach((bucket)=>{
       if(bucket !== null){

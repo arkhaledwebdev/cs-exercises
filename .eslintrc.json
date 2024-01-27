@@ -10,6 +10,6 @@
   },
   "rules": {
     "no-console": "off",
-    "allowForLoopAfterthoughts": true
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }]
   }
 }
