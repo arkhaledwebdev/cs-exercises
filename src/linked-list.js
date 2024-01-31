@@ -1,4 +1,4 @@
-const Node = require('./linked-node');
+const Node = require("./linked-node");
 
 class LinkedList {
   constructor(head) {
@@ -50,7 +50,7 @@ class LinkedList {
         return currentNode.value;
       }
       currentNode = currentNode.next;
-      number +=1;
+      number += 1;
     }
     return number;
   }
@@ -90,14 +90,67 @@ class LinkedList {
     return null;
   }
 
+  insertAt(value, index) {
+    let currentNode = this.head;
+    let previousNode = null;
+    let currentIndex = 0;
+    while (currentNode) {
+      if (index === 0) {
+        this.prepend(value);
+        return;
+      }
+      if (index === this.size()) {
+        this.append(value);
+        return;
+      }
+      if (currentIndex === index) {
+        const tempNode = new Node(currentNode.value, currentNode.next);
+        currentNode.value = value;
+        currentNode.next = tempNode;
+        previousNode.next = currentNode;
+        return;
+      }
+      previousNode = currentNode;
+      currentNode = currentNode.next;
+      currentIndex += 1;
+    }
+  }
+
+  remove(index) {
+    let currentNode = this.head;
+    let previousNode = null;
+    let currentIndex = 0;
+
+    while (currentNode) {
+      if (index === 0) {
+        this.head = currentNode.next;
+        return;
+      }
+      if (currentNode.next === null) {
+        currentNode = null;
+        previousNode.next = currentNode;
+        return;
+      }
+      if (index === currentIndex) {
+        currentNode.value = currentNode.next.value;
+        currentNode.next = currentNode.next.next;
+        previousNode.next = currentNode;
+        return;
+      }
+      previousNode = currentNode;
+      currentNode = currentNode.next;
+      currentIndex += 1;
+    }
+  }
+
   toString() {
     let currentNode = this.head;
     let nodeString = "";
     while (currentNode) {
-      nodeString += `( ${currentNode.value} ) -> `
+      nodeString += `( ${currentNode.value} ) -> `;
       currentNode = currentNode.next;
     }
-    nodeString += 'null';
+    nodeString += "null";
     return nodeString;
   }
 }
@@ -134,5 +187,9 @@ console.log(`at(1): ${linkedList.at(0)}`);
 console.log(`contains(100): ${linkedList.contains(100)}`);
 console.log(`find(100): ${linkedList.find(100)}`);
 console.log(linkedList.toString());
-
-
+console.log(`insert: 20 at index 1`);
+linkedList.insertAt(20, 1);
+console.log(linkedList.toString());
+console.log(`remove: at index 44`);
+linkedList.remove(44);
+console.log(linkedList.toString());
