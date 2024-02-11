@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const BSTNode = require("./bst-node");
 const prettyPrint = require("./pretty-print");
 
@@ -45,23 +46,47 @@ class BSTTree {
     }
   }
 
-  delete(value, root = this.root) {
-    let currentNode = this.root;
-    while (currentNode) {
-      if (value === currentNode.data) {
-        if (currentNode.left === null && currentNode.right === null) {
-          currentNode = null;
-          return;
-        }
-      }
-      if (value < currentNode.data) {
-        currentNode = currentNode.left;
-      }
+  delete(value) {
+    this.root = this.deleteNode(value, this.root);
+  }
 
-      if (value > currentNode.data) {
-        currentNode = currentNode.right;
-      }
+  deleteNode(value, currentNode) {
+    if (currentNode == null) {
+      return null;
     }
+    if (value < currentNode.data) {
+      currentNode.left = this.deleteNode(value, currentNode.left);
+      return currentNode;
+    }
+    if (value > currentNode.data) {
+      currentNode.right = this.deleteNode(value, currentNode.right);
+      return currentNode;
+    }
+    // NO Children
+    if (currentNode.left === null && currentNode.right === null) {
+      currentNode = null;
+      return currentNode;
+    }
+    // one child to the right
+    if (currentNode.left === null) {
+      return currentNode.right;
+    }
+    // one child to the right
+    if (currentNode.right === null) {
+      return currentNode.left;
+    }
+    // two children
+    const tempNode = this.findMinNode(currentNode.right);
+    currentNode.data = tempNode.data;
+    currentNode.right = this.deleteNode(tempNode.data, currentNode.right);
+    return currentNode;
+  }
+
+  findMinNode(node) {
+    if (node.left === null) {
+      return node;
+    }
+    return this.findMinNode(node.left);
   }
 }
 
@@ -71,7 +96,11 @@ const testBTSTree = new BSTTree(testArray);
 
 console.log(testBTSTree);
 console.log(prettyPrint(testBTSTree.root));
+testBTSTree.insert(80);
+testBTSTree.insert(70);
 testBTSTree.insert(100);
 console.log(prettyPrint(testBTSTree.root));
-testBTSTree.delete(100);
+testBTSTree.delete(80);
+console.log(prettyPrint(testBTSTree.root));
+testBTSTree.insert(80);
 console.log(prettyPrint(testBTSTree.root));
