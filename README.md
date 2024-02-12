@@ -2,3 +2,4 @@
 
 - Linked Lists
 - Hash Maps
+- Binary search trees
