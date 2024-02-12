@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 const BSTNode = require("./bst-node");
-const prettyPrint = require("./pretty-print");
 
 class BSTTree {
   constructor(array) {
@@ -252,22 +251,48 @@ class BSTTree {
       return printQueue;
     }
   }
+
+  isBalanced() {
+    const leftTreeHeight = this.height(this.root.left);
+    const rightTreeHeight = this.height(this.root.right);
+    return !(
+      leftTreeHeight - rightTreeHeight || rightTreeHeight - leftTreeHeight > 1
+    );
+  }
+
+  reBalance() {
+    const newSortedArray = this.inOrder();
+    this.root = this.buildTree(newSortedArray);
+  }
 }
 
-const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+module.exports = BSTTree;
 
-const testBTSTree = new BSTTree(testArray);
+// const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-prettyPrint(testBTSTree.root);
-testBTSTree.insert(100);
-prettyPrint(testBTSTree.root);
-testBTSTree.delete(6345);
-prettyPrint(testBTSTree.root);
-console.log(testBTSTree.find(324));
-console.log(`height of (67) : ${testBTSTree.heightOfNode(67)}`);
-console.log(`depth of (67) : ${testBTSTree.depth(67)}`);
-console.log(`Level order : ${testBTSTree.levelOrder()}`);
-console.log(`Level order : ${testBTSTree.levelOrderRecursive()}`);
-console.log(`Pre-order : ${testBTSTree.preOrder()}`);
-console.log(`In-order : ${testBTSTree.inOrder()}`);
-console.log(`Post-order : ${testBTSTree.postOrder()}`);
+// const testBTSTree = new BSTTree(testArray);
+
+// prettyPrint(testBTSTree.root);
+// console.log("insert 100, 120, 130, 140");
+// testBTSTree.insert(100);
+// testBTSTree.insert(120);
+// testBTSTree.insert(130);
+// testBTSTree.insert(140);
+// prettyPrint(testBTSTree.root);
+// console.log("delete 6345");
+// testBTSTree.delete(6345);
+// prettyPrint(testBTSTree.root);
+// console.log("find 324");
+// console.log(testBTSTree.find(324));
+// console.log(`height of (67) : ${testBTSTree.heightOfNode(67)}`);
+// console.log(`depth of (67) : ${testBTSTree.depth(67)}`);
+// console.log(`Level order : ${testBTSTree.levelOrder()}`);
+// console.log(`Level order : ${testBTSTree.levelOrderRecursive()}`);
+// console.log(`Pre-order : ${testBTSTree.preOrder()}`);
+// console.log(`In-order : ${testBTSTree.inOrder()}`);
+// console.log(`Post-order : ${testBTSTree.postOrder()}`);
+// prettyPrint(testBTSTree.root);
+// console.log(`isBalanced : ${testBTSTree.isBalanced()}`);
+// console.log("reBalance the tree");
+// testBTSTree.reBalance();
+// prettyPrint(testBTSTree.root);
